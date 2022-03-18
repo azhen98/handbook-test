@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/element-plus@2.0.3/dist/index.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <el-form
+        :inline="true"
+        :model="parmas"
+        class="demo-form-inline"
+        label-width="100px"
+      >
+        <el-form-item
+          :label="key"
+          v-for="(item,key,index) in parmas"
+          :key="index"
+        >
+          <el-input v-model="parmas[key]"> </el-input>
+        </el-form-item>
+        <el-form-item label="操作">
+          <el-button type="primary" @click="openWindow">跳转</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.31/vue.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/element-plus@2.0.3/dist/index.full.min.js"></script>
+
+    <script>
+      const app = Vue.createApp({
+        setup() {
+          const parmas = Vue.reactive({
+            classId: 0,
+            startDate: '--',
+            endDate: '--',
+            startDateLast: '--',
+            endDateLast: '--',
+            gradeNum: 0,
+            schoolId: 0,
+            subjectId: 0,
+            userId: 0,
+            token: '',
+            userId: '--',
+            subjectName: '--',
+            schoolName: '--',
+            gradeName: '--',
+            className: '--',
+            userName: '--'
+          })
+          const openWindow = () => {
+            function convertObj(data) {
+              var _result = []
+              for (var key in data) {
+                var value = data[key]
+                if (value.constructor == Array) {
+                  value.forEach(function (_value) {
+                    _result.push(key + '=' + _value)
+                  })
+                } else {
+                  _result.push(key + '=' + value)
+                }
+              }
+              return _result.join('&')
+            }
+
+            const query = convertObj(parmas)
+
+            window.open(
+              'https://studentexercisereport.hexfuture.net?' + query,
+              '_blank'
+            )
+          }
+          return {
+            parmas,
+            openWindow
+          }
+        }
+      })
+      app.use(ElementPlus)
+      app.mount('#app')
+    </script>
+  </body>
+</html>
